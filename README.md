@@ -7,7 +7,7 @@
 ## 🔗 Repositorio Público
 
 ```
-https://github.com/TU_USUARIO/ecommerce-spring-boot
+https://github.com/yechua-silva/ecommerce-spring-boot
 ```
 
 > Reemplazá `TU_USUARIO` por tu usuario real de GitHub antes de entregar.
