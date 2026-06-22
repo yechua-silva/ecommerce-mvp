@@ -10,8 +10,6 @@
 https://github.com/yechua-silva/ecommerce-spring-boot
 ```
 
-> Reemplazá `TU_USUARIO` por tu usuario real de GitHub antes de entregar.
-
 ---
 
 ## 📋 Requisitos Previos
@@ -175,8 +173,6 @@ mvn test
 | `AuthControllerTest` | Integración + Security | Valida registro de usuario y que el password se encripta con BCrypt |
 | `SecurityConfigTest` | Integración + Security | Verifica que `/admin/**` retorna 403 para usuarios sin rol ADMIN y 302/200 para ADMIN |
 
-> Ubicación: `src/test/java/com/ejemplo/ecommerce/`
-
 ---
 
 ## 📁 Estructura del Proyecto
@@ -249,12 +245,3 @@ El archivo `ecommerce-spring-boot.zip` contiene el proyecto listo para importar 
 4. **DevTools**: incluido para hot-reload durante desarrollo.
 
 ---
-
-## 👥 Autor
-
-- **Bootcamp Academy** — Módulo 6: E-commerce Spring Boot
-- Proyecto desarrollado como parte del tramo final del bootcamp.
-
----
-
-> **Estado del proyecto**: ✅ Funcional — arranca, conecta a PostgreSQL, carga datos iniciales, autentica por roles y permite CRUD completo de productos.
