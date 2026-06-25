@@ -1,0 +1,65 @@
+/* E-Gym Fitness - Custom Styles */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.card-img-top {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+    transform: translateY(-1px);
+}
+
+.alert {
+    border-radius: 8px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+a.text-success:hover {
+    color: #157347 !important;
+    text-decoration: underline;
+}
+
+.badge {
+    font-size: 0.85rem;
+    padding: 0.35em 0.65em;
+}

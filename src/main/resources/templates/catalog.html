@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Catálogo — E-Gym Fitness</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body class="bg-dark text-light">
 <div class="container my-4">
@@ -13,9 +14,11 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link active" th:href="@{/catalog}">Catálogo</a></li>
+                    
                     <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                         <a class="nav-link text-warning" th:href="@{/admin/products}">Admin Productos</a>
                     </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/cart}">Carrito</a></li>
                 </ul>
                 <div class="d-flex align-items-center">
                     <span sec:authorize="isAuthenticated()" class="me-3">
@@ -57,7 +60,12 @@
                 <div class="card-body">
                     <h5 class="card-title text-success" th:text="${p.name}"></h5>
                     <p class="card-text text-muted" th:text="${p.description}"></p>
-                    <p class="text-success fw-bold">$<<span th:text="${p.price}"></span></p>
+                    <p class="text-success fw-bold">$<span th:text="${p.price}"></span></p>
+                	<form method="post" th:action="@{/cart/add}">
+    					<input type="hidden" name="productId" th:value="${p.id}">
+					    <input type="hidden" name="quantity" value="1">
+					    <button type="submit" class="btn btn-outline-success btn-sm">Agregar al carrito</button>
+					</form>
                 </div>
             </div>
         </div>

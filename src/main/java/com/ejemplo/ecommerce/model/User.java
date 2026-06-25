@@ -1,6 +1,8 @@
 package com.ejemplo.ecommerce.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -10,15 +12,20 @@ public class User {
     private Long id;
     
     @Column(nullable = false, unique = true)
+    @NotBlank(message = "El email es obligatorio")
     private String email;
     
     @Column(nullable = false)
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
     
     @Column(nullable = false)
+    @NotBlank(message = "El nombre es obligatorio")
     private String firstName;
     
     @Column(nullable = false)
+    @NotBlank(message = "El apellido es obligatorio")
     private String lastName;
     
     @Column(nullable = false)

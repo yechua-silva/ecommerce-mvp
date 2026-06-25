@@ -4,12 +4,14 @@ import com.ejemplo.ecommerce.model.Category;
 import com.ejemplo.ecommerce.model.Product;
 import com.ejemplo.ecommerce.repository.CategoryRepository;
 import com.ejemplo.ecommerce.repository.ProductRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.math.BigDecimal;
+
 import java.util.Optional;
 
 @Controller
@@ -26,8 +28,11 @@ public class AdminProductController {
     public String list(@RequestParam(required = false) String search,
                       @RequestParam(required = false) Integer category,
                       Model model) {
+        // Use empty string instead of null to avoid Hibernate binding
+        // the parameter as JAVA_OBJECT (which becomes bytea in PostgreSQL)
+        String searchParam = (search != null && !search.isBlank()) ? search : "";
         model.addAttribute("products", productRepository.findAllFiltered(
-            search != null && !search.isBlank() ? search : null,
+            searchParam,
             category
         ));
         model.addAttribute("categories", categoryRepository.findAll());
@@ -53,50 +58,54 @@ public class AdminProductController {
     }
 
     @PostMapping
-    public String save(@RequestParam String name,
-                      @RequestParam String description,
-                      @RequestParam BigDecimal price,
-                      @RequestParam Integer categoryId,
-                      @RequestParam(required = false) String imageUrl,
-                      RedirectAttributes redirectAttrs) {
-        Product p = new Product();
-        p.setName(name);
-        p.setDescription(description);
-        p.setPrice(price);
-        p.setImageUrl(imageUrl);
-        p.setActive(true);
+    public String save(@Valid @ModelAttribute("product") Product product,
+                       BindingResult result,
+                       @RequestParam Integer categoryId,
+                       RedirectAttributes redirectAttrs,
+                       Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("categories", categoryRepository.findAll());
+            return "admin/product-form";
+        }
         
         Category cat = categoryRepository.findById(categoryId)
             .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
-        p.setCategory(cat);
+        product.setCategory(cat);
+        product.setActive(true); // por defecto activo
         
-        productRepository.save(p);
+        productRepository.save(product);
         redirectAttrs.addFlashAttribute("msg", "creado");
         return "redirect:/admin/products";
     }
 
     @PostMapping("/update")
-    public String update(@RequestParam Integer id,
-                        @RequestParam String name,
-                        @RequestParam String description,
-                        @RequestParam BigDecimal price,
-                        @RequestParam Integer categoryId,
-                        @RequestParam(required = false) String imageUrl,
-                        @RequestParam(required = false) Boolean active,
-                        RedirectAttributes redirectAttrs) {
-        Product p = productRepository.findById(id)
+    public String update(@Valid @ModelAttribute("product") Product product,
+                         BindingResult result,
+                         @RequestParam Integer categoryId,
+                         @RequestParam(required = false) Boolean active,
+                         RedirectAttributes redirectAttrs,
+                         Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("categories", categoryRepository.findAll());
+            return "admin/product-form";
+        }
+        
+        // Buscar el producto existente para mantener el id y otros campos
+        Product existing = productRepository.findById(product.getId())
             .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        p.setName(name);
-        p.setDescription(description);
-        p.setPrice(price);
-        p.setImageUrl(imageUrl);
-        p.setActive(active != null ? active : false);
+        
+        // Actualizar campos permitidos
+        existing.setName(product.getName());
+        existing.setDescription(product.getDescription());
+        existing.setPrice(product.getPrice());
+        existing.setImageUrl(product.getImageUrl());
+        existing.setActive(active != null ? active : false);
         
         Category cat = categoryRepository.findById(categoryId)
             .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
-        p.setCategory(cat);
+        existing.setCategory(cat);
         
-        productRepository.save(p);
+        productRepository.save(existing);
         redirectAttrs.addFlashAttribute("msg", "actualizado");
         return "redirect:/admin/products";
     }

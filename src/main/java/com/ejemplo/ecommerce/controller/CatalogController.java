@@ -24,8 +24,11 @@ public class CatalogController {
                          Model model) {
         List<Product> products;
         if (search != null || category != null) {
-            products = productRepository.findAllFiltered(
-                search != null && !search.isBlank() ? search : null, 
+            // Use empty string instead of null to avoid Hibernate binding
+            // the parameter as JAVA_OBJECT (which becomes bytea in PostgreSQL)
+            String searchParam = (search != null && !search.isBlank()) ? search : "";
+            products = productRepository.findAllFilteredActive(
+                searchParam, 
                 category
             );
         } else {
