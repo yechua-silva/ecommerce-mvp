@@ -2,6 +2,9 @@
 
 E-commerce con autenticación, roles, carrito de compras, checkout y persistencia con PostgreSQL.
 
+[![GitHub](https://img.shields.io/badge/Repo-ecommerce--mvp-181717?logo=github)](https://github.com/yechua-silva/ecommerce-mvp)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-yechua--silva-0A66C2?logo=linkedin)](https://www.linkedin.com/in/yechua-silva/)
+
 ---
 
 ## 📋 Requisitos Previos
